@@ -28,6 +28,7 @@ import java.io.IOException;
 
 public class ImageLabelActivity extends AppCompatActivity {
 
+    private static final String TAG = "ImageLabelActivity";
     private ImageIterator images = null;
     private ImageView imageView = null;
     private Activity mainView = null;
@@ -62,7 +63,15 @@ public class ImageLabelActivity extends AppCompatActivity {
                 });
             }
         });
-        imageDownloader.startDownloadAsync();
+
+        boolean isOnline = NetworkStateChecker.isOnline(this);
+        if(isOnline == true) {
+            imageDownloader.startDownloadAsync();
+        } else {
+            Toast.makeText(imageLabelActivity, R.string.no_internet_message, Toast.LENGTH_LONG).show();
+            Log.e(TAG, "Image download could not be started because there is no internet connection");
+        }
+
 
     }
 
